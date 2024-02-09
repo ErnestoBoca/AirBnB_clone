@@ -28,27 +28,28 @@ class TestBaseModel(TestCase):
         my_model = BaseModel()
         my_model.name = "My_First_Model"
         my_model.my_number = 89
-
         my_model_json = my_model.to_dict()
         my_new_model = BaseModel(**my_model_json)
-        
+
         for key, value in my_model_json.items():
             if key != "__class__":
                 self.assertTrue(hasattr(my_new_model, key))
-                
+
                 if key == "created_at" or key == "updated_at":
                     self.assertIsInstance(getattr(my_new_model, key),
-                            datetime)
-                    self.assertEqual(datetime.strptime(value,
-                        "%Y-%m-%dT%H:%M:%S.%f"), getattr(my_new_model, key))
+                                          datetime)
+                    self.assertEqual(
+                        datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"),
+                        getattr(my_new_model, key))
                 else:
                     self.assertEqual(value, getattr(my_new_model, key))
 
     def test_str(self):
         """Tests the __str__ function"""
         model1 = BaseModel()
-        goal = "[{}] ({}) {}".format(model1.__class__.__name__,
-                model1.id, model1.__dict__)
+        goal = "[{}] ({}) {}".format(
+            model1.__class__.__name__, model1.id, model1.__dict__
+        )
         self.assertEqual(model1.__str__(), goal)
 
     def test_save(self):
@@ -68,7 +69,7 @@ class TestBaseModel(TestCase):
         model_dict = model.to_dict()
 
         self.assertIsInstance(model_dict, dict)
-        
+
         self.assertIn("id", model_dict)
         self.assertIn("created_at", model_dict)
         self.assertIn("updated_at", model_dict)
@@ -82,4 +83,3 @@ class TestBaseModel(TestCase):
         date_format_regex = r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}'
         self.assertRegex(model_dict["created_at"], date_format_regex)
         self.assertRegex(model_dict["updated_at"], date_format_regex)
-        
