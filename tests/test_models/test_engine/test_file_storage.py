@@ -13,7 +13,6 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(type(FileStorage._FileStorage__objects), dict)
 
     def test_all(self):
-        """Tests if the method all() returns a dictionary"""
         storage = FileStorage()
         obj_dict = storage.all()
 

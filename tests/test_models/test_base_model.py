@@ -25,6 +25,7 @@ class TestBaseModel(TestCase):
         self.assertNotEqual(model1.id, model2.id)
 
     def test_int_kwargs(self):
+        """Tests the init method with arguments"""
         my_model = BaseModel()
         my_model.name = "My_First_Model"
         my_model.my_number = 89
