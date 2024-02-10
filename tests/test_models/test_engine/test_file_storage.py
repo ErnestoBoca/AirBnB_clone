@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This module contains tests for the FileStorage clss"""
 import unittest
+import models
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 
@@ -11,6 +12,7 @@ class TestFileStorage(unittest.TestCase):
     def test_attrs(self):
         self.assertEqual(type(FileStorage._FileStorage__file_path), str)
         self.assertEqual(type(FileStorage._FileStorage__objects), dict)
+        self.assertEqual(type(models.storage), FileStorage)
 
     def test_all(self):
         storage = FileStorage()
