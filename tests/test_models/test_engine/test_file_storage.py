@@ -14,6 +14,9 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(type(FileStorage._FileStorage__objects), dict)
         self.assertEqual(type(models.storage), FileStorage)
 
+        with self.assertRaises(TypeError):
+            FileStorage(None)
+
     def test_all(self):
         storage = FileStorage()
         obj_dict = storage.all()
