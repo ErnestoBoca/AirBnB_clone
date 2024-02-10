@@ -61,6 +61,9 @@ class TestBaseModel(TestCase):
 
         self.assertNotEqual(date1, date2)
 
+        with self.assertRaises(TypeError):
+            model.save(None)
+
     def test_to_dict(self):
         """Tests the to_dict method"""
         model = BaseModel()
@@ -83,3 +86,6 @@ class TestBaseModel(TestCase):
         date_format_regex = r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}'
         self.assertRegex(model_dict["created_at"], date_format_regex)
         self.assertRegex(model_dict["updated_at"], date_format_regex)
+
+        with self.assertRaises(TypeError):
+            model.to_dict(None)
