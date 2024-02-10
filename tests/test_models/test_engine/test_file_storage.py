@@ -4,6 +4,7 @@ import unittest
 import models
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
+from models.user import User
 
 
 class TestFileStorage(unittest.TestCase):
@@ -28,11 +29,15 @@ class TestFileStorage(unittest.TestCase):
     def test_new(self):
         storage = FileStorage()
         bm = BaseModel()
+        user = User()
 
         storage.new(bm)
+        storage.new(user)
 
         self.assertIn("BaseModel." + bm.id, storage.all().keys())
         self.assertIn(bm, storage.all().values())
+        self.assertIn("User." + user.id, models.storage.all().keys())
+        self.assertIn(user, models.storage.all().values())
 
         with self.assertRaises(TypeError):
             storage.new()
@@ -41,12 +46,17 @@ class TestFileStorage(unittest.TestCase):
 
     def test_save(self):
         bm = BaseModel()
+        user = User()
         storage = FileStorage()
+
+        storage.new(bm)
+        storage.new(user)
         storage.save()
 
         with open("file.json", "r", encoding="utf-8") as file:
             text_saved = file.read()
             self.assertIn("BaseModel." + bm.id, text_saved)
+            self.assertIn("User." + user.id, text_saved)
 
             with self.assertRaises(TypeError):
                 storage.save(None)
@@ -54,11 +64,15 @@ class TestFileStorage(unittest.TestCase):
     def test_reload(self):
         storage = FileStorage()
         bm = BaseModel()
+        user = User()
 
+        storage.new(bm)
+        storage.new(user)
         storage.save()
         storage.reload()
 
         self.assertIn("BaseModel." + bm.id, storage.all().keys())
+        self.assertIn("User." + user.id, storage.all().keys())
 
         with self.assertRaises(TypeError):
             storage.reload(None)
