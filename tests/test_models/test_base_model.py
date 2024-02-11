@@ -24,29 +24,35 @@ class TestBaseModel(TestCase):
         self.assertIsInstance(model1.updated_at, datetime)
 
         self.assertNotEqual(model1.id, model2.id)
+        self.assertLess(model1.created_at, model2.created_at)
+        self.assertLess(model1.updated_at, model2.updated_at)
 
-        self.assertIn(model2, storage.all().values())
+        self.assertIn(BaseModel(), storage.all().values())
+
+    def test_args_unused(self):
+        bm = BaseModel(None)
+        self.assertNotIn(None, bm.__dict__.values())
 
     def test_int_kwargs(self):
         """Tests the init method with arguments"""
-        my_model = BaseModel()
-        my_model.name = "My_First_Model"
-        my_model.my_number = 89
-        my_model_json = my_model.to_dict()
-        my_new_model = BaseModel(**my_model_json)
+        dt = datetime.today()
+        dt_iso = dt.isoformat()
+        bm = BaseModel(id="345", created_at=dt_iso, updated_at=dt_iso)
+        self.assertEqual(bm.id, "345")
+        self.assertEqual(bm.created_at, dt)
+        self.assertEqual(bm.updated_at, dt)
 
-        for key, value in my_model_json.items():
-            if key != "__class__":
-                self.assertTrue(hasattr(my_new_model, key))
+    def test_instantiation_with_None_kwargs(self):
+        with self.assertRaises(TypeError):
+            BaseModel(id=None, created_at=None, updated_at=None)
 
-                if key == "created_at" or key == "updated_at":
-                    self.assertIsInstance(getattr(my_new_model, key),
-                                          datetime)
-                    self.assertEqual(
-                        datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"),
-                        getattr(my_new_model, key))
-                else:
-                    self.assertEqual(value, getattr(my_new_model, key))
+    def test_instantiation_with_args_and_kwargs(self):
+        dt = datetime.today()
+        dt_iso = dt.isoformat()
+        bm = BaseModel("12", id="345", created_at=dt_iso, updated_at=dt_iso)
+        self.assertEqual(bm.id, "345")
+        self.assertEqual(bm.created_at, dt)
+        self.assertEqual(bm.updated_at, dt)
 
     def test_str(self):
         """Tests the __str__ function"""
