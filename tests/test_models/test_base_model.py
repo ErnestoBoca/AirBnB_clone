@@ -3,6 +3,7 @@
 from unittest import TestCase
 from models.base_model import BaseModel
 from datetime import datetime
+from models import storage
 
 
 class TestBaseModel(TestCase):
@@ -23,6 +24,8 @@ class TestBaseModel(TestCase):
         self.assertIsInstance(model1.updated_at, datetime)
 
         self.assertNotEqual(model1.id, model2.id)
+
+        self.assertIn(model2, storage.all().values())
 
     def test_int_kwargs(self):
         """Tests the init method with arguments"""
@@ -61,6 +64,11 @@ class TestBaseModel(TestCase):
         date2 = model.updated_at
 
         self.assertNotEqual(date1, date2)
+        self.assertLess(date1, date2)
+
+        model_id = "BaseModel." + model.id
+        with open("file.json", "r") as f:
+            self.assertIn(model_id, f.read())
 
         with self.assertRaises(TypeError):
             model.save(None)
