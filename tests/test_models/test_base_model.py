@@ -80,6 +80,7 @@ class TestBaseModel(TestCase):
         model.name = "My first model"
         model_dict = model.to_dict()
 
+        self.assertNotEqual(model.to_dict(), model.__dict__)
         self.assertIsInstance(model_dict, dict)
 
         self.assertIn("id", model_dict)
@@ -98,3 +99,16 @@ class TestBaseModel(TestCase):
 
         with self.assertRaises(TypeError):
             model.to_dict(None)
+
+    def test_to_dict_output(self):
+        dt = datetime.today()
+        bm = BaseModel()
+        bm.id = "123456"
+        bm.created_at = bm.updated_at = dt
+        tdict = {
+            'id': '123456',
+            '__class__': 'BaseModel',
+            'created_at': dt.isoformat(),
+            'updated_at': dt.isoformat()
+        }
+        self.assertDictEqual(bm.to_dict(), tdict)
