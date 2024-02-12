@@ -17,6 +17,7 @@ class TestBaseModel(TestCase):
         model1 = BaseModel()
         model2 = BaseModel()
 
+        self.assertEqual(BaseModel, type(BaseModel()))
         self.assertIsInstance(model1, BaseModel)
 
         self.assertTrue(hasattr(model1, "id"))
@@ -82,6 +83,17 @@ class TestBaseModel(TestCase):
 
         with self.assertRaises(TypeError):
             model.save(None)
+
+    def test_two_saves(self):
+        bm = BaseModel()
+        sleep(0.05)
+        first_updated_at = bm.updated_at
+        bm.save()
+        second_updated_at = bm.updated_at
+        self.assertLess(first_updated_at, second_updated_at)
+        sleep(0.05)
+        bm.save()
+        self.assertLess(second_updated_at, bm.updated_at)
 
     def test_to_dict(self):
         """Tests the to_dict method"""

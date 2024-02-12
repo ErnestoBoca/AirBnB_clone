@@ -65,9 +65,9 @@ class TestFileStorage(unittest.TestCase):
         self.assertIn(review, models.storage.all().values())
 
         with self.assertRaises(TypeError):
-            storage.new()
+            storage.new(None)
         with self.assertRaises(TypeError):
-            storage.new(None, "")
+            storage.new(3, "")
 
     def test_save(self):
         bm = BaseModel()
