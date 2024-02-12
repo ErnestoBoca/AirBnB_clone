@@ -8,20 +8,19 @@ class TestUser(TestCase):
     """test cases for the User class"""
 
     def test_init(self):
-        user = User()
+        
+        self.assertTrue(hasattr(User, "email"))
+        self.assertIsInstance(User.email, str)
+        self.assertEqual(User.email, "")
 
-        self.assertTrue(hasattr(user, "email"))
-        self.assertIsInstance(user.email, str)
-        self.assertEqual(user.email, "")
+        self.assertTrue(hasattr(User, "password"))
+        self.assertIsInstance(User.password, str)
+        self.assertEqual(User.password, "")
 
-        self.assertTrue(hasattr(user, "password"))
-        self.assertIsInstance(user.password, str)
-        self.assertEqual(user.password, "")
+        self.assertTrue(hasattr(User, "first_name"))
+        self.assertIsInstance(User.first_name, str)
+        self.assertEqual(User.first_name, "")
 
-        self.assertTrue(hasattr(user, "first_name"))
-        self.assertIsInstance(user.first_name, str)
-        self.assertEqual(user.first_name, "")
-
-        self.assertTrue(hasattr(user, "last_name"))
-        self.assertIsInstance(user.last_name, str)
-        self.assertEqual(user.last_name, "")
+        self.assertTrue(hasattr(User, "last_name"))
+        self.assertIsInstance(User.last_name, str)
+        self.assertEqual(User.last_name, "")
