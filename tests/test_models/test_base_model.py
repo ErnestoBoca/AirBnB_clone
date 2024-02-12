@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This module conatins the TestBaseModel class"""
 from unittest import TestCase
+import models.base_model as base_model
 from models.base_model import BaseModel
 from datetime import datetime
 from models import storage
@@ -8,6 +9,9 @@ from models import storage
 
 class TestBaseModel(TestCase):
     """This class contains the test cases for the BaseModel class"""
+    def test_import(self):
+        self.assertTrue(hasattr(base_model, "storage"))
+
     def test_init(self):
         """Tests the __init__ method"""
         model1 = BaseModel()
